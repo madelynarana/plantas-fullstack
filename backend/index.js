@@ -30,7 +30,7 @@ app.get("/plantas", async (req, respuesta) => {
       query.rows
     );
   } catch (error) {
-      console.error("Error en obtener las plantas:", error);
+    console.error("Error en obtener las plantas:", error);
     respuesta.status(500)
       .json({
         error: "Error al obtener plantas."
@@ -80,6 +80,36 @@ app.put("/planta/:id", async (req, respuesta) => {
   }
 });
 
+
+// Ruta para insertar planta 
+app.post("/planta", async (req, respuesta) => {
+  const plantas = req.body;
+
+  if (!Array.isArray(plantas) || plantas.length === 0) {
+    return res.status(400).json({ error: "No se enviaron plantas" });
+  }
+
+  try {
+    const values = [];
+    const placeholders = plantas.map((p, i) => {
+      const idx = i * 4; // 4 columnas por planta: entity_id, name, taxonomy, image_url
+      values.push(p.entity_id, p.name, JSON.stringify(p.taxonomy), p.image_url);
+      return `($${idx + 1}, $${idx + 2}, $${idx + 3}::jsonb, $${idx + 4}, 'C')`;
+    });
+
+    const queryText = `
+      INSERT INTO plant_detail(entity_id, name, taxonomy, image_url, status)
+      VALUES ${placeholders.join(", ")}
+      ON CONFLICT (entity_id) DO NOTHING
+      RETURNING *;
+    `;
+
+    const result = await conexionBD.query(queryText, values);
+    respuesta.json(result.rows);
+  } catch (err) {
+    respuesta.status(500).json({ error: err.message });
+  }
+});
 
 app.listen(
   port, () => {
