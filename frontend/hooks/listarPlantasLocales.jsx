@@ -7,9 +7,9 @@ export const listarPlantasLocales = () => {
     
     useEffect(() => {
         const listarPlantas = async () => {
-            const getData = await fetch('http://localhost:3000/plantas');
-            const response = await getData.json();
-            setData(response);
+            const getDatos = await fetch('http://localhost:3000/plantas');
+            const respuesta = await getDatos.json();
+            setData(respuesta);
         }
         listarPlantas();
 
@@ -17,6 +17,6 @@ export const listarPlantasLocales = () => {
 
 
     return {
-        data
+        data,
     }
 }

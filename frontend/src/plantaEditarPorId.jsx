@@ -1,6 +1,7 @@
 
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { plantaBuscarPorId } from '../hooks/plantaBuscarPorId';
+import { listarPlantasLocales } from '../hooks/listarPlantasLocales';
 
 
 
@@ -18,6 +19,7 @@ const EditarPlanta = () => {
       
     setTimeout(() => { 
           navigate('/plantaBuscarPorNombre');
+          listarPlantasLocales();
       }, 2000);
 };
 
