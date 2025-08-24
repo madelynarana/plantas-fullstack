@@ -3,6 +3,7 @@ import { useState } from "react";
 const BuscarPlanta = () => {
   const [parametro, setParametro] = useState("");
   const [datosPlantaFiltrados, setDatosPlantaFiltrados] = useState([]);
+  const [mensaje, setMensaje] = useState("");
   const API_KEY = "AX5wcwJGnbvQj4laSqA3aPpf7HopDVgz2N72keKApdbXHPw8Nd";
 
 
@@ -45,6 +46,33 @@ const BuscarPlanta = () => {
   };
 
 
+
+  // Boton para registrar las plantas consultadas en el api
+  const btnRegistrarPlantas = async () => {
+    if (datosPlantaFiltrados.length === 0) {
+      setMensaje("No hay plantas para registrar");
+      return;
+    }
+
+    try {
+      const postDatos = await fetch("http://localhost:3000/planta", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosPlantaFiltrados),
+      });
+
+      if (!postDatos.ok) {
+        throw new Error("Error al registrar las plantas");
+      }
+
+      const resultado = await postDatos.json();
+      setMensaje(`Se registraron ${resultado.length} plantas correctamente`);
+    } catch (err) {
+      setMensaje("Error al registrar plantas: " + err.message);
+    }
+  };
+
+
   return (
     <div>
       <h1>Buscar plantas</h1>
@@ -62,6 +90,15 @@ const BuscarPlanta = () => {
           Buscar
         </button>
       </div>
+      <div>
+        <button
+          onClick={btnRegistrarPlantas}
+          style={{ marginTop: '20px',  marginBottom:'20px'}}
+        >
+          Registrar Plantas BD
+        </button>
+      </div>
+      {mensaje && <p>{mensaje}</p>}
       {datosPlantaFiltrados.length > 0 ? (
         <table border="1" style={{ marginTop: '20px' }}>
           <thead>
@@ -93,7 +130,7 @@ const BuscarPlanta = () => {
           </tbody>
         </table>
       ) : (
-        <p>No se encontraron resultados</p>
+        <p>No hay registros consultados</p>
       )}
     </div>
   );
