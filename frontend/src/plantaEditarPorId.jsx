@@ -1,5 +1,5 @@
 
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { plantaBuscarPorId } from '../hooks/plantaBuscarPorId';
 
 
@@ -7,93 +7,105 @@ import { plantaBuscarPorId } from '../hooks/plantaBuscarPorId';
 const EditarPlanta = () => {
 
   const { idPlant } = useParams();
-  
-  const { name, imageUrl, taxonomy } = plantaBuscarPorId(idPlant)
-  const { class: className, genus, order, family, phylum, kingdom } = taxonomy || {};
+  const navigate = useNavigate();
+  const { name, setName, imageUrl, setImageUrl, taxonomy, setTaxonomy, actualizarPlantaPorId } = plantaBuscarPorId(idPlant);
+
+  const btnActualizarPlanta = async (e) => {
+
+    e.preventDefault();
+
+    const data = await actualizarPlantaPorId();
+      
+    setTimeout(() => { 
+          navigate('/plantaBuscarPorNombre');
+      }, 2000);
+};
 
   return (
     <div>
-      <h2>Actualizar Planta</h2>
-      <form>
+      <h2>Editar Planta</h2>
+    <form onSubmit={btnActualizarPlanta}>
         <div>
           <label>Nombre:</label>
-          <input
-            type='text'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+          <input 
+            type="text" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
           />
         </div>
 
         <div>
           <label>Clase:</label>
-          <input
-            type='text'
-            value={className}
-            onChange={(e) => setClassName(e.target.value )}
+          <input 
+            type="text" 
+            value={taxonomy.class} 
+            onChange={(e) => setTaxonomy({ ...taxonomy, class: e.target.value })} 
           />
         </div>
 
         <div>
           <label>Género:</label>
-          <input
-            type='text'
-            value={genus}
-            onChange={(e) => setTaxonomy(e.target.value )}
+          <input 
+            type="text" 
+            value={taxonomy.genus} 
+            onChange={(e) => setTaxonomy({ ...taxonomy, genus: e.target.value })} 
           />
         </div>
 
         <div>
           <label>Orden:</label>
-          <input
-            type='text'
-            value={order}
-            onChange={(e) => setTaxonomy(e.target.value)}
+          <input 
+            type="text" 
+            value={taxonomy.order} 
+            onChange={(e) => setTaxonomy({ ...taxonomy, order: e.target.value })} 
           />
         </div>
 
         <div>
           <label>Familia:</label>
-          <input
-            type='text'
-            value={family}
-            onChange={(e) => setTaxonomy(e.target.value)}
+          <input 
+            type="text" 
+            value={taxonomy.family} 
+            onChange={(e) => setTaxonomy({ ...taxonomy, family: e.target.value })} 
           />
         </div>
 
         <div>
           <label>Filo:</label>
-          <input
-            type='text'
-            value={phylum}
-            onChange={(e) => setTaxonomy(e.target.value)}
+          <input 
+            type="text" 
+            value={taxonomy.phylum} 
+            onChange={(e) => setTaxonomy({ ...taxonomy, phylum: e.target.value })} 
           />
         </div>
 
         <div>
           <label>Reino:</label>
-          <input
-            type='text'
-            value={kingdom}
-            onChange={(e) => setTaxonomy(e.target.value)}
+          <input 
+            type="text" 
+            value={taxonomy.kingdom} 
+            onChange={(e) => setTaxonomy({ ...taxonomy, kingdom: e.target.value })} 
           />
         </div>
 
         <div>
           <label>Imagen URL:</label>
-          <input
-            type='text'
-            value={imageUrl}
-            onChange={(e) => setImageUrl(target.value)}
+          <input 
+            type="text" 
+            value={imageUrl} 
+            onChange={(e) => setImageUrl(e.target.value)} 
           />
         </div>
         <div>
-          <button name='submit'>Actualizar</button>
+          <button type="submit">Actualizar</button>
         </div>
         <div>
+          <Link to={'/plantaBuscarPorNombre/'}>Regresar</Link>
         </div>
-      </form>
+    </form>
     </div>
   );
 };
+
 
 export default EditarPlanta;
