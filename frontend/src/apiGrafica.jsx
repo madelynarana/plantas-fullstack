@@ -8,7 +8,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const ApiGrafica = () => {
     const [datosApi, setDatosApi] = useState(null);
     const [loading, setLoading] = useState(true);
-    const API_KEY = 'n6lhC0Ed6H7Drk8x0IZnIWwj2n9HyOi3QhnTS3PyHVpVfO52hV';
+    const API_KEY = 'zBBTijzN7tEm1ixu5DfvrQyrLAZ0GNfVfAlA7OjyKOuMDAvcrj';
 
     useEffect(() => {
         const estadistica = async () => {
@@ -45,7 +45,7 @@ const ApiGrafica = () => {
     if (!datosApi) return <p>Error al cargar los datos de la API.</p>;
 
     const datosGraficas = {
-        labels: ['Total', 'Usados', 'Restantes'],
+        labels: ['Límite de Créditos', 'Usados', 'Restantes'],
         datasets: [
             {
                 label: 'Créditos API',
@@ -60,15 +60,20 @@ const ApiGrafica = () => {
     };
 
     return (
-        <div>
-            <h1>Mi Gráfica de Barras</h1>
+        <div id='section6' className='section green lighten-4 scrollspy'>
+            <div className='container'>
+                <h4 className='center green-text text-darken-3'>Visualiza tus estadísticas</h4>
+                <div className='row'>
+                    <div className='col s12 m6'>
+                        <p>
+                            <b>Estatus de API:</b> {datosApi.active ? 'Activo' : 'Inactivo'} <br />
+                        </p>
 
-            <p>
-                <b>Estatus de API:</b> {datosApi.active ? 'Activo' : 'Inactivo'} <br />
-            </p>
-
-            <div style={{ width: '400px', height: '400px' }}>
-                <Bar data={datosGraficas} options={options} />
+                        <div style={{ width: '100%' }}>
+                            <Bar data={datosGraficas} options={options} />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -7,6 +7,7 @@ import PlantasPorFamilia from './plantaPorFamilia';
 import ApiGrafica from './apiGrafica';
 import Template from './paginaInicio';
 import PaginaInicio from './paginaInicio';
+import PlantaIdentificar from './plantaIdentificar';
 
 
 export const App = () => {
@@ -19,6 +20,7 @@ export const App = () => {
                 <Route path='/' element={<BuscarPlanta />} />
                 <Route path='/plantaEditarPorId/:idPlant' element={<EditarPlanta />} />
                 <Route path='/apiGrafica' element={<ApiGrafica/>} />
+                <Route path='/plantaIdentificar' element={<PlantaIdentificar/>} />
             </Routes>
         </div>
     );
