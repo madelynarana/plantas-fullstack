@@ -84,7 +84,6 @@ app.put("/planta/:id", async (req, respuesta) => {
 // Ruta para insertar planta 
 app.post("/planta", async (req, respuesta) => {
   const plantas = req.body;
-
   if (!Array.isArray(plantas) || plantas.length === 0) {
     return res.status(400).json({ error: "No se enviaron plantas" });
   }
@@ -93,7 +92,7 @@ app.post("/planta", async (req, respuesta) => {
     const values = [];
     const placeholders = plantas.map((p, i) => {
       const idx = i * 4; // 4 columnas por planta: entity_id, name, taxonomy, image_url
-      values.push(p.entity_id, p.name, JSON.stringify(p.taxonomy), p.image_url);
+      values.push(p.entity_id, p.name, JSON.stringify(p.taxonomy), p.image.value);
       return `($${idx + 1}, $${idx + 2}, $${idx + 3}::jsonb, $${idx + 4}, 'C')`;
     });
 
@@ -108,6 +107,26 @@ app.post("/planta", async (req, respuesta) => {
     respuesta.json(result.rows);
   } catch (err) {
     respuesta.status(500).json({ error: err.message });
+  }
+});
+
+// Ruta para listar destalle de plantas
+app.get("/familia", async (req, respuesta) => {
+  try {
+    const query =
+      await conexionBD.query(`SELECT taxonomy->>'family' AS family, COUNT(*) AS total
+        FROM plant_detail
+        GROUP BY taxonomy->>'family'
+        ORDER BY total Asc`);
+    respuesta.json(
+      query.rows
+    );
+  } catch (error) {
+    console.error("Error en obtener las plantas:", error);
+    respuesta.status(500)
+      .json({
+        error: "Error al obtener plantas."
+      });
   }
 });
 

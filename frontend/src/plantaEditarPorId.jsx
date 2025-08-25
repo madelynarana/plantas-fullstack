@@ -1,8 +1,7 @@
 
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { plantaBuscarPorId } from '../hooks/plantaBuscarPorId';
-import { listarPlantasLocales } from '../hooks/listarPlantasLocales';
-
+import { plantaObtenerListado } from '../hooks/plantaObtenerListado';
 
 
 const EditarPlanta = () => {
@@ -14,12 +13,11 @@ const EditarPlanta = () => {
   const btnActualizarPlanta = async (e) => {
 
     e.preventDefault();
+      actualizarPlantaPorId();
 
-    const data = await actualizarPlantaPorId();
-      
     setTimeout(() => { 
-          navigate('/plantaBuscarPorNombre');
-          listarPlantasLocales();
+          navigate('/plantaBuscar');
+          plantaObtenerListado();
       }, 2000);
 };
 
@@ -102,7 +100,7 @@ const EditarPlanta = () => {
           <button type="submit">Actualizar</button>
         </div>
         <div>
-          <Link to={'/plantaBuscarPorNombre/'}>Regresar</Link>
+          <Link to={'/plantaBuscar/'}>Regresar</Link>
         </div>
     </form>
     </div>
