@@ -110,7 +110,7 @@ app.post("/planta", async (req, respuesta) => {
   }
 });
 
-// Ruta para listar destalle de plantas
+// Ruta para listar destalle de plantas por familia
 app.get("/familia", async (req, respuesta) => {
   try {
     const query =
@@ -122,10 +122,10 @@ app.get("/familia", async (req, respuesta) => {
       query.rows
     );
   } catch (error) {
-    console.error("Error en obtener las plantas:", error);
+    console.error("Error en consultar familia de plantas:", error);
     respuesta.status(500)
       .json({
-        error: "Error al obtener plantas."
+        error: "Error al obtener familia de pantas."
       });
   }
 });
