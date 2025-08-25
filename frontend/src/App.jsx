@@ -5,7 +5,6 @@ import EditarPlanta from './plantaEditarPorId';
 import BuscarPlanta from './plantaBuscar';
 import PlantasPorFamilia from './plantaPorFamilia';
 import ApiGrafica from './apiGrafica';
-import Template from './paginaInicio';
 import PaginaInicio from './paginaInicio';
 import PlantaIdentificar from './plantaIdentificar';
 
@@ -17,7 +16,7 @@ export const App = () => {
                 <Route path='/PaginaInicio' element={<PaginaInicio/>} />
                 <Route path='/plantaBuscar' element={<BuscarPlanta />} />
                 <Route path='/plantasPorFamilia' element={<PlantasPorFamilia />} />            
-                <Route path='/' element={<BuscarPlanta />} />
+                <Route path='/' element={<PaginaInicio />} />
                 <Route path='/plantaEditarPorId/:idPlant' element={<EditarPlanta />} />
                 <Route path='/apiGrafica' element={<ApiGrafica/>} />
                 <Route path='/plantaIdentificar' element={<PlantaIdentificar/>} />
