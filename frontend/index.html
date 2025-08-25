@@ -1,12 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plantas</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plantas</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    nav,
+    header,
+    footer {
+      background-color: #2e7d32;
+    }
+
+    header a,
+    footer p {
+      color: white !important;
+    }
+
+    .section {
+      padding: 50px 0;
+    }
+
+    .tabla-bonita th,
+    .tabla-bonita td {
+      padding: 10px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 15px 0;
+    }
+    .margin-top{
+      margin-top: 20px;
+    }
+
+    a{
+      color: #0d0d0e !important;
+      font-weight: bold;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    main {
+      margin-top: 64px;
+      margin-bottom: 80px;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        margin-top: 56px;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .scrollspy {
+      scroll-margin-top: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="z-depth-0 ">
+      <div class="nav-wrapper container">
+        <a href="#section1" class="brand-logo">Mis Plantas</a>
+        <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li>
+            <a href="#section1">Inicio</a>
+          </li>
+          <li><a href="#section2">Detalles Planta</a></li>
+          <li><a href="#section3">Estadísticas</a></li>
+          <li><a href="#section4">Mensajes</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <ul class="sidenav" id="mobile-nav" style="margin-top: 20px;">
+    <li><a href="#section1">Inicio</a></li>
+    <li><a href="#section2">Gestión</a></li>
+    <li><a href="#section3">Estadísticas</a></li>
+    <li><a href="#section4">Mensajes</a></li>
+  </ul>
+
+  <div id="root" class="green lighten-5"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <footer class="center white-text">
+    <p>© 2025 Mis Plantas</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var sidenavs = document.querySelectorAll('.sidenav');
+      M.Sidenav.init(sidenavs);
+    });
+  </script>
+</body>
+
 </html>
