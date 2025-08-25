@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { plantaObtenerListado } from "../hooks/plantaObtenerListado";
+import { Link } from "react-router-dom";
 
 const BuscarPlanta = () => {
   const [parametro, setParametro] = useState("");
@@ -90,36 +91,34 @@ const BuscarPlanta = () => {
 
   return (
     <div>
-
-
-    <div>
       <div>
-      <h1>Buscar plantas de forma local</h1>
-        <input
-          type="text"
-          placeholder="Escribir nombre o taxonomia para buscar local"
-          value={parametro}
-          onChange={(e) => setParametro(e.target.value)}
+        <div>
+          <h1>Buscar plantas de forma local</h1>
+          <input
+            type="text"
+            placeholder="Escribir nombre o taxonomia para buscar local"
+            value={parametro}
+            onChange={(e) => setParametro(e.target.value)}
 
-        />
+          />
 
-      </div>
+        </div>
 
-      <div>
-       <h1>Buscar plantas en el api</h1>
-        <button
-          onClick={btnBuscarPlantaApi}
-        >
-          Buscar en api
-        </button>
+        <div>
+          <h1>Buscar plantas en el api</h1>
+          <button
+            onClick={btnBuscarPlantaApi}
+          >
+            Buscar en api
+          </button>
 
-        <button
-          onClick={btnRegistrarPlantas}
-          style={{ marginTop: '20px', marginBottom: '20px' }}
-        >
-          Registrar Plantas BD
-        </button>
-      </div>
+          <button
+            onClick={btnRegistrarPlantas}
+            style={{ marginTop: '20px', marginBottom: '20px' }}
+          >
+            Registrar Plantas de api en BD
+          </button>
+        </div>
       </div>
       <div>
         <h1>Registros almacenados en la base de datos</h1>
@@ -138,9 +137,10 @@ const BuscarPlanta = () => {
           </tr>
         </thead>
         <tbody>
-
-
-          {getPlantasFiltradasEnBd.map(({ entity_id: id, name, image_url, taxonomy, status }) => (
+        {
+          getPlantasFiltradasEnBd.length === 0
+          ? 'Sin registros'
+          : getPlantasFiltradasEnBd.map(({ entity_id: id, name, image_url, taxonomy, status }) => (
             <tr key={id}>
               <td>{id}</td>
               <td>{name}</td>
@@ -158,11 +158,17 @@ const BuscarPlanta = () => {
               <td>
                 {status === 'C' ? 'Creado' : 'Actualizado'}
               </td>
-              <td>Editar</td>
+              <td>
+                <Link to={`/plantaEditarPorId/${id}`}>Edit</Link>
+              </td>
             </tr>
           ))}
 
-          {datosPlantaFiltradosApi.map(({ entity_id: id, name, image, taxonomy }) => (
+          {
+            datosPlantaFiltradosApi.length === 0
+            ? 'Sin registros'
+            :
+            datosPlantaFiltradosApi.map(({ entity_id: id, name, image, taxonomy }) => (
             <tr key={id}>
               <td>{id}</td>
               <td>{name}</td>
