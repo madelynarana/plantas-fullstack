@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { plantaObtenerListado } from "../hooks/plantaObtenerListado";
 
 const BuscarPlanta = () => {
   const [parametro, setParametro] = useState("");
-  const [datosPlantaFiltrados, setDatosPlantaFiltrados] = useState([]);
+  const [datosPlantaFiltradosApi, setDatosPlantaFiltradosApi] = useState([]);
   const [mensaje, setMensaje] = useState("");
-  const API_KEY = "AX5wcwJGnbvQj4laSqA3aPpf7HopDVgz2N72keKApdbXHPw8Nd";
+  const { datosBD } = plantaObtenerListado();
+  const API_KEY = "n6lhC0Ed6H7Drk8x0IZnIWwj2n9HyOi3QhnTS3PyHVpVfO52hV";
 
 
   const btnBuscarPlantaApi = async () => {
@@ -38,7 +40,7 @@ const BuscarPlanta = () => {
         })
       );
 
-      setDatosPlantaFiltrados(detallesPlanta);
+      setDatosPlantaFiltradosApi(detallesPlanta);
 
     } catch (err) {
       console.error(err);
@@ -49,8 +51,8 @@ const BuscarPlanta = () => {
 
   // Boton para registrar las plantas consultadas en el api
   const btnRegistrarPlantas = async () => {
-    if (datosPlantaFiltrados.length === 0) {
-      setMensaje("No hay plantas para registrar");
+    if (datosPlantaFiltradosApi.length === 0) {
+      setMensaje('');
       return;
     }
 
@@ -58,7 +60,7 @@ const BuscarPlanta = () => {
       const postDatos = await fetch("http://localhost:3000/planta", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosPlantaFiltrados),
+        body: JSON.stringify(datosPlantaFiltradosApi),
       });
 
       if (!postDatos.ok) {
@@ -73,65 +75,112 @@ const BuscarPlanta = () => {
   };
 
 
+
+  // Filtrado por nombre o taxonomía de la base de datos local
+  const getPlantasFiltradasEnBd = datosBD.filter(({ name, taxonomy }) => {
+    const inputTxtBusqueda = parametro.toLowerCase();
+    const nombreCoincide = name?.toLowerCase().includes(inputTxtBusqueda);
+    const taxonomiaCoincide = Object.values(taxonomy || {})
+      .join(" ")
+      .toLowerCase()
+      .includes(inputTxtBusqueda);
+    return nombreCoincide || taxonomiaCoincide;
+  });
+
+
   return (
     <div>
-      <h1>Buscar plantas</h1>
 
+
+    <div>
       <div>
+      <h1>Buscar plantas de forma local</h1>
         <input
           type="text"
-          placeholder="Nombre"
+          placeholder="Escribir nombre o taxonomia para buscar local"
           value={parametro}
           onChange={(e) => setParametro(e.target.value)}
+
         />
+
+      </div>
+
+      <div>
+       <h1>Buscar plantas en el api</h1>
         <button
           onClick={btnBuscarPlantaApi}
         >
-          Buscar
+          Buscar en api
         </button>
-      </div>
-      <div>
+
         <button
           onClick={btnRegistrarPlantas}
-          style={{ marginTop: '20px',  marginBottom:'20px'}}
+          style={{ marginTop: '20px', marginBottom: '20px' }}
         >
           Registrar Plantas BD
         </button>
       </div>
+      </div>
+      <div>
+        <h1>Registros almacenados en la base de datos</h1>
+      </div>
       {mensaje && <p>{mensaje}</p>}
-      {datosPlantaFiltrados.length > 0 ? (
-        <table border="1" style={{ marginTop: '20px' }}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Taxonomía</th>
-              <th>Imagen</th>
+
+      <table border="1" style={{ marginTop: '20px' }}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Taxonomía</th>
+            <th>Imagen</th>
+            <th>Estatus</th>
+            <th>Editar</th>
+          </tr>
+        </thead>
+        <tbody>
+
+
+          {getPlantasFiltradasEnBd.map(({ entity_id: id, name, image_url, taxonomy, status }) => (
+            <tr key={id}>
+              <td>{id}</td>
+              <td>{name}</td>
+              <td>
+                <b>Clase: </b> {taxonomy.class}
+                <b> Género: </b>{taxonomy.genus}
+                <b> Familia: </b> {taxonomy.family}
+                <b> Orden: </b> {taxonomy.order}
+                <b> Filo: </b> {taxonomy.phylum}
+                <b> Reino: </b> {taxonomy.kingdom}
+              </td>
+              <td>
+                <img src={image_url} style={{ width: '100px' }} />
+              </td>
+              <td>
+                {status === 'C' ? 'Creado' : 'Actualizado'}
+              </td>
+              <td>Editar</td>
             </tr>
-          </thead>
-          <tbody>
-            {datosPlantaFiltrados.map(({ entity_id: id, name, image, taxonomy }) => (
-              <tr key={id}>
-                <td>{id}</td>
-                <td>{name}</td>
-                <td>
-                  <b>Clase: </b> {taxonomy.class}
-                  <b> Género: </b>{taxonomy.genus}
-                  <b> Familia: </b> {taxonomy.family}
-                  <b> Orden: </b> {taxonomy.order}
-                  <b> Filo: </b> {taxonomy.phylum}
-                  <b> Reino: </b> {taxonomy.kingdom}
-                </td>
-                <td>
-                  <img src={image.value} style={{ width: '100px' }} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No hay registros consultados</p>
-      )}
+          ))}
+
+          {datosPlantaFiltradosApi.map(({ entity_id: id, name, image, taxonomy }) => (
+            <tr key={id}>
+              <td>{id}</td>
+              <td>{name}</td>
+              <td>
+                <b>Clase: </b> {taxonomy.class}
+                <b> Género: </b>{taxonomy.genus}
+                <b> Familia: </b> {taxonomy.family}
+                <b> Orden: </b> {taxonomy.order}
+                <b> Filo: </b> {taxonomy.phylum}
+                <b> Reino: </b> {taxonomy.kingdom}
+              </td>
+              <td>
+                <img src={image.value} style={{ width: '100px' }} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 
