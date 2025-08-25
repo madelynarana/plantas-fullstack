@@ -39,14 +39,16 @@
       width: 100%;
       padding: 15px 0;
     }
-    .margin-top{
+
+    .margin-top {
       margin-top: 20px;
     }
 
-    a{
+    a {
       color: #0d0d0e !important;
       font-weight: bold;
     }
+
     header {
       position: fixed;
       top: 0;
@@ -65,12 +67,35 @@
       }
     }
 
+    .section {
+      margin: 50px 0;
+    }
+
     html {
       scroll-behavior: smooth;
     }
 
     .scrollspy {
       scroll-margin-top: 70px;
+    }
+
+    @media only screen and (max-width: 992px) {
+      .responsive-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        display: block;
+        position: relative;
+      }
+
+      @media only screen and (max-width: 992px) {
+
+        table.responsive-table th,
+        table.responsive-table td {
+          margin: 0;
+          vertical-align: top;
+        }
+      }
     }
   </style>
 </head>

@@ -137,7 +137,7 @@ const BuscarPlanta = () => {
             {mensaje && <p>{mensaje}</p>}
           </div>
 
-          <table border="1" style={{ marginTop: '20px' }}>
+          <table  style={{ marginTop: '20px' }} ClassName="highlight tabla-bonita centered responsive-table">
             <thead>
               <tr>
                 <th>ID</th>
