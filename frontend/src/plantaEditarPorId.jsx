@@ -16,7 +16,7 @@ const EditarPlanta = () => {
     actualizarPlantaPorId();
 
     setTimeout(() => {
-      navigate('/plantaBuscar');
+      navigate('/paginaInicio');
       plantaObtenerListado();
     }, 2000);
   };
