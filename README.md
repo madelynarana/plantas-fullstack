@@ -1,4 +1,4 @@
-# 🚗 Sistema de plantas - nodejs y reactjs
+# Sistema de plantas - nodejs y reactjs
 
 ## 📂 Estructura del Proyecto
 
