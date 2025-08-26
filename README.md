@@ -41,3 +41,13 @@ Vista general de la organización del proyecto.
    ```
 ### 3️⃣ Base de datos
 - Ejecutar el archivo `backup.sql` en postgresql15.
+
+### Ejecutar Docker
+- Clonar el repositorio, ingresar a la ruta principal y luego correr
+ ```bash
+      docker compose up --build
+   ```
+### Accesos a la aplicación
+
+Backend → http://localhost:3000
+Frontend → http://localhost:5173
